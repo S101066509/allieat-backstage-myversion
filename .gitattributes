@@ -1,2 +1,21 @@
-/mvnw text eol=lf
+# 自動偵測文字檔並正確處理換行
+* text=auto
+
+# Java / XML 使用 LF 換行
+*.java text eol=lf
+*.xml text eol=lf
+
+# Windows 批次檔用 CRLF
 *.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Unix shell script 用 LF
+*.sh text eol=lf
+/mvnw text eol=lf
+
+# 圖片不做 diff
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
