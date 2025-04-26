@@ -7,6 +7,7 @@ import com.allieat.service.BackStageOrgManageService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -47,7 +48,7 @@ public class BackStageOrgManageServiceImpl implements BackStageOrgManageService 
         result = convertOrgToMap(selectedData.get());
         return result;
     }
-
+    @Transactional
     public Map<String, Object> updateOrgData(UpdateOrgDTO updateData) {
         Map<String, Object> result = new HashMap<>();
         Integer id = updateData.getOrganizationId();
@@ -78,6 +79,7 @@ public class BackStageOrgManageServiceImpl implements BackStageOrgManageService 
     }
 
     @Override
+    @Transactional
     public Map<String, Object> newOrgData(UpdateOrgDTO inputData) {
         Map<String, Object> result = new HashMap<>();
         OrganizationVO newData = new OrganizationVO();
