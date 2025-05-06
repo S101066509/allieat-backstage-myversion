@@ -6,6 +6,7 @@ import com.allieat.repository.DonationRepository;
 import com.allieat.repository.DonorRepository;
 import com.allieat.repository.OrderFoodRepository;
 import com.allieat.repository.TotalAmountRepository;
+import com.allieat.scheduler.DonationUpdateNotifier;
 import com.allieat.service.BackStageHomePageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,7 +24,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class BackStageHomePageServiceImpl implements BackStageHomePageService {
+public class BackStageHomePageServiceImpl implements BackStageHomePageService, DonationUpdateNotifier {
 
 	@Autowired
 	private DonationRepository accDona;

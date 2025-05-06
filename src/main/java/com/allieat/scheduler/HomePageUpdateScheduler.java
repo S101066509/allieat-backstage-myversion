@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 public class HomePageUpdateScheduler {
 
     @Autowired
-    private BackStageHomePageServiceImpl backStageHomePageServiceImpl;
+    private DonationUpdateNotifier donationUpdateNotifier;
     
     @Scheduled(fixedDelay = 10000)
     public void checkDonation() {
-    	backStageHomePageServiceImpl.checkForUpdate();
+        donationUpdateNotifier.checkForUpdate();
     }
 }
