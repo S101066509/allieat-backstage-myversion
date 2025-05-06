@@ -30,9 +30,9 @@ public class BackStageHomePageServiceTest {
     private JwtUtil jwtUtil;
 
     @MockitoBean
-    private BackStageHomePageService backStageHomePageService;
+    private BackStageHomePageService backStageHomePageService;//service
     @MockitoBean
-    private DonationUpdateNotifier donationUpdateNotifier;
+    private DonationUpdateNotifier donationUpdateNotifier;//排程器的service
 
     //攔截器pass設定
     @BeforeEach

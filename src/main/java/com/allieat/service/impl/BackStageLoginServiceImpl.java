@@ -1,6 +1,7 @@
 package com.allieat.service.impl;
 
 
+import com.allieat.constant.LoginConstant;
 import com.allieat.dto.AdminDTO;
 import com.allieat.repository.jdbc.BackStageLoginDao;
 
@@ -37,19 +38,19 @@ public class BackStageLoginServiceImpl implements BackStageLoginService {
         List<AdminVO> adminList = backStageLogin.findByAccount(adminVO);
 
         if (adminList.isEmpty()) {
-            return createResult("account does not exist");
+            return createResult(LoginConstant.ACCOUNT_NOT_EXIST);
         }
         AdminVO foundAdmin = adminList.get(0); // 取出結果
 
         if (!StringUtils.hasText(foundAdmin.getPassword())
                 || ! encoder.matches(admin.getPassword(), foundAdmin.getPassword())) {
-            return createResult("login failed password is incorrect"); // 密碼錯誤
+            return createResult(LoginConstant.PASSWORD_INCORRECT); // 密碼錯誤
         }
 
         // 產生Token
         String token = jwtUtil.generateToken(foundAdmin.getAccount());
         // 回傳值設定
-        Map<String, Object> result = createResult("login ok");
+        Map<String, Object> result = createResult(LoginConstant.SUCCESS);
         result.put("token", token);
         return result; // 密碼正確
 
