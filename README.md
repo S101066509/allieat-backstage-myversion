@@ -30,12 +30,15 @@ mysql -u root -p < sql/init_allieat.sql
 ```
 
 - 預設資料庫名稱：`allieatfinal_db01`
-- 預設管理員帳號（如 sql 檔有提供）：帳號: a001 / 密碼 :pwa001
+- 預設管理員帳號密碼：帳號: a001 / 密碼 :pwa001
 - SQL 內容包含：
   - 資料表建立（organization, administrator, donationrecord...）
   - 初始測試資料匯入
 
 SQL 檔案路徑：`/sql/init_allieat.sql`
+
+此資料庫檔案與原始專案共用。
+
 ---
 
 ## 技術架構
