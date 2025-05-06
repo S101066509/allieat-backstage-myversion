@@ -1,6 +1,6 @@
 package com.allieat.controller;
 
-import com.allieat.constant.OrgManageConstant;
+
 import com.allieat.dto.UpdateOrgDTO;
 import com.allieat.service.BackStageOrgManageService;
 import com.allieat.util.JwtUtil;
