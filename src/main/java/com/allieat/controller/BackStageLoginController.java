@@ -37,6 +37,7 @@ public class BackStageLoginController {
     //錯誤處理
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleLocalException(Exception e) {
+        System.err.println(e.getMessage());
         Map<String, Object> error = new HashMap<>();
         error.put("loginState", LoginConstant.SERVER_ERROR);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
