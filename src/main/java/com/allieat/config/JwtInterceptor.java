@@ -26,7 +26,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-        String path = request.getRequestURI();
+
 
         // 只攔截 /backStage/**，這邊可以省略判斷，交由 WebConfig 控制攔截範圍
 
