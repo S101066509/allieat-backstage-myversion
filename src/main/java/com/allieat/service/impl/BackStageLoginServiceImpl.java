@@ -2,6 +2,7 @@ package com.allieat.service.impl;
 
 
 import com.allieat.constant.LoginConstant;
+import com.allieat.constant.LogoutConstant;
 import com.allieat.dto.AdminDTO;
 import com.allieat.repository.jdbc.BackStageLoginDao;
 
@@ -55,7 +56,6 @@ public class BackStageLoginServiceImpl implements BackStageLoginService {
 
         // 產生Token
         String token = jwtUtil.generateToken(foundAdmin.getAccount());
-        System.err.println(token);
         // 回傳值設定
         Map<String, Object> result = createResult(LoginConstant.SUCCESS);
         result.put("token", token);
@@ -70,19 +70,19 @@ public class BackStageLoginServiceImpl implements BackStageLoginService {
         long currentTimeMillis = System.currentTimeMillis();
         long creationTimeMillis = creationTime.getTime();
         long ttlMillis = currentTimeMillis - creationTimeMillis;  // 已存在的時間差
-        long tokenMaxLifetimeMillis = 30 * 60 * 1000;  // 30 分鐘（假設 token 的有效期是 30 分鐘）
+        long tokenMaxLifetimeMillis = LogoutConstant.TOKEN_MAX_LIFETIME_MILLIS;
         long remainingTtlMillis = tokenMaxLifetimeMillis - ttlMillis;
 
-        //計算剩餘有效時間並設置 TTL（以秒為單位）
+        //計算剩餘有效時間並設置 TTL(秒)
         long ttlSeconds = remainingTtlMillis / 1000;
 
         if (ttlSeconds > 0) {
             // 將 token 加入黑名單並設定過期時間
-            redis.opsForValue().set("blacklist:" + token, "true", remainingTtlMillis, TimeUnit.MILLISECONDS);// 設定過期時間
-            return createResult("Logout successful");
+            redis.opsForValue().set(LogoutConstant.BLACKLIST_PREFIX + token, "true", remainingTtlMillis, TimeUnit.MILLISECONDS);// 設定過期時間
+            return createResult(LogoutConstant.LOGOUT_SUCCESS);
         } else {
             // token 已過期，直接返回錯誤。
-            return createResult("Token has already expired");
+            return createResult(LogoutConstant.TOKEN_EXPIRED);
         }
     }
 

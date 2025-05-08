@@ -26,7 +26,7 @@ public class JwtUtil {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
-
+    //驗證token
     public boolean validateToken(String token) {
         try {
             getClaims(token);
@@ -36,7 +36,7 @@ public class JwtUtil {
         }
     }
 
-
+    //解析JWT
     private Claims getClaims(String token) {
         return Jwts
                 .parserBuilder()
