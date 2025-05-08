@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import java.io.IOException;
+import org.springframework.lang.NonNull;
+
 
 /*
 * Jwt攔截器，根據登入有沒有JwtToken來決定是否發送回覆。
@@ -25,7 +27,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+    public boolean preHandle(@NonNull HttpServletRequest request,
+                             @NonNull HttpServletResponse response,
+                             @NonNull Object handler) throws IOException {
 
 
         // 只攔截 /backStage/**，這邊可以省略判斷，交由 WebConfig 控制攔截範圍
