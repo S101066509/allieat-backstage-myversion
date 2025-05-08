@@ -21,10 +21,19 @@ function requireLogin() {
 
 // 登出並導向登入頁
 function logout() {
-    localStorage.removeItem("jwtToken");
-    window.location.href = loginPagePath;
-}
+    const token = localStorage.getItem("jwtToken");
 
+    fetch("/backStage/logout", {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }).finally(() => {
+        localStorage.removeItem("jwtToken");
+        localStorage.removeItem("loginAccount");
+        window.location.href = loginPagePath;
+    });
+}
 // 自動附帶 JWT Token 的 fetch 封裝
 let hasRedirected = false;// 用於 判斷是否轉跳過
 async function authFetch(url, options = {}) {

@@ -5,6 +5,7 @@ package com.allieat.controller;
 import com.allieat.constant. LoginConstant;
 import com.allieat.dto.AdminDTO;
 import com.allieat.service.BackStageLoginService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,26 @@ public class BackStageLoginController {
         }
         return ResponseEntity.ok(result);//正確回傳
     }
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
+        // 從 HTTP Header 中獲取 Authorization 的 Bearer Token
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            // 如果沒有傳遞 token，回傳 400 錯誤
+            return ResponseEntity.badRequest().body(Map.of("error", "Missing or invalid Authorization header"));
+        }
+
+        // 提取 Token 部分（移除 "Bearer " 字串）
+        String token = authHeader.substring(7);
+
+        // 呼叫服務層的登出邏輯
+        Map<String, Object> result = backStageLoginService.logout(token);
+
+        // 根據結果回傳登出成功或失敗的訊息
+        return ResponseEntity.ok(result);
+    }
+
+
 
     //錯誤處理
     @ExceptionHandler(Exception.class)

@@ -101,12 +101,6 @@ function requireLogin() {
     });
 }
 
-// ====== 登出功能（可選） ======
-function logout() {
-    localStorage.removeItem("jwtToken");
-    localStorage.removeItem("loginAccount");
-    window.location.href = loginPagePath;
-}
 
 // ====== 解析 JWT Payload ======
 function parseJwt(token) {

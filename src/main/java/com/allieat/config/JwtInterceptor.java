@@ -5,6 +5,7 @@ import com.allieat.util.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import java.io.IOException;
@@ -18,6 +19,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private StringRedisTemplate redis;//用於黑名單檢查
 
 
     @Override
@@ -39,6 +43,13 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (!jwtUtil.validateToken(token)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid or expired JWT token");
+            return false;
+        }
+
+        //黑名單檢測
+        if (redis.hasKey("blacklist:" + token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token has been logged out");
             return false;
         }
         return true;

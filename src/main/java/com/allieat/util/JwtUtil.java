@@ -36,9 +36,6 @@ public class JwtUtil {
         }
     }
 
-    public String getUsername(String token) {
-        return getClaims(token).getSubject();
-    }
 
     private Claims getClaims(String token) {
         return Jwts
@@ -47,5 +44,10 @@ public class JwtUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+    //提取token創造時間
+    public Date getCreationTime(String token) {
+        Claims claims = getClaims(token); // 解析 Token
+        return claims.getIssuedAt();  // 回傳創建時間
     }
 }
