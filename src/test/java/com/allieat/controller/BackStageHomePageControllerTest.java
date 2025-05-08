@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BackStageHomePageServiceTest {
+public class BackStageHomePageControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockitoBean
