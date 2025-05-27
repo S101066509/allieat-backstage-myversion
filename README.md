@@ -46,7 +46,7 @@ https://github.com/Flyting0314/allieat
 mysql -u root -p < sql/init_allieat.sql
 ```
 
-- 預設資料庫名稱：`allieatfinal_db01`
+- 預設資料庫名稱：`allieatfinal_db01`,預設資料庫密碼：`123456`
 - 預設管理員帳號密碼：帳號: a001 / 密碼 :pwa001
 - SQL 內容包含：
   - 資料表建立（organization, administrator, donationrecord...）
