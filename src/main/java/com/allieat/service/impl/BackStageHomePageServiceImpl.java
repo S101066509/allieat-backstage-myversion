@@ -58,8 +58,14 @@ public class BackStageHomePageServiceImpl implements BackStageHomePageService, D
 	@Override
 	public Map<String, Object> getMonthlyDonations() {
 		Map<String, Object> result = new HashMap<>();
-		//每月的捐贈
-		result.put("monthlyDonations", totalAmount.Now() - totalAmount.LastMonth());
+//		修改邏輯避免null值導致錯誤
+		Integer now = totalAmount.Now();
+		Integer lastMonth = totalAmount.LastMonth();
+
+		int nowVal = (now == null) ? 0 : now;
+		int lastVal = (lastMonth == null) ? 0 : lastMonth;
+
+		result.put("monthlyDonations", nowVal - lastVal);
 		return result;
 	}
 
