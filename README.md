@@ -2,16 +2,16 @@
 
 這是一份從 allieat 專案中擷取並重構的部分後台系統，專注於管理端的核心功能，內容包含：
 
-- **JWT 登入系統**  
+- JWT 登入系統  
   使用 JWT 實作登入與權限驗證機制，並透過 Redis 管理 Token 黑名單。
 
-- **首頁即時數據（長輪詢）**  
+- 首頁即時數據（長輪詢）  
   利用 `DeferredResult` 與排程機制實作長輪詢，首頁可即時更新捐款金額與人數等資訊。
 
-- **單位管理模組（Org）**  
+- 單位管理模組（Org）  
   包含單位的查詢、審核、新增與修改等完整後台功能。
 
-- **捐款紀錄管理模組（Donated）**  
+- 捐款紀錄管理模組（Donated）  
   提供捐款資料的新增、編輯、查詢等後台 API，並處理自然人／法人身份類別的資料格式。
 
 本專案為團隊專案的一部分，原始完整專案請參考：  
@@ -31,82 +31,70 @@ https://github.com/Flyting0314/allieat
 - RESTful API 設計
 - Maven 套件管理
 
----
+## 專案結構如下
 
-## 專案結構
+- 控制器 / 服務 / DTO 三層清晰分離
+- 後台模組（登入、首頁、單位、捐款）具備獨立路由與封裝邏輯
+- JWT 驗證攔截器與 WebConfig 可彈性配置
 
-- Controller / Service / DTO 三層式架構
-- 模組分離：Login / Dashboard / Organization / Donation
-- JWT 驗證攔截器 + WebConfig 可配置化
 
----
+## 資料庫初始化（SQL 匯入）
 
-#  使用 Docker 快速啟動專案
-
-本專案使用Docker compose 啟用方案：
-
-- Spring Boot 後端服務
-- MySQL（自動匯入初始化 SQL）
-- Redis（JWT 黑名單快取）
----
-
-##  1. 建立環境（Docker Compose）
-請安裝：
-- Docker
-- Docker Compose
-
-並使用以下指令啟用，打包與啟用：
+請先啟動本機 MySQL 環境，並執行以下指令來初始化資料庫：
 
 ```bash
-docker compose up --build
+mysql -u root -p < sql/init_allieat.sql
 ```
 
-Docker 會自動：
+- 預設資料庫名稱：`allieatfinal_db01`
+- 預設管理員帳號密碼：帳號: a001 / 密碼 :pwa001
+- SQL 內容包含：
+  - 資料表建立（organization, administrator, donationrecord...）
+  - 初始測試資料匯入
 
-1. 建立 MySQL
-2. 自動匯入 `init-db/init_allieat.sql` 初始化資料
-3. 啟動 Redis
-4. 打包並啟動 Spring Boot
+SQL 檔案路徑：`/sql/init_allieat.sql`
+
+此資料庫檔案與原始專案共用。
 
 ---
 
-## 2. MySQL 資料庫資訊
+## Redis 啟動與設定說明
 
-- Host：`db`
-- Port：`3306`
-- 預設資料庫：`allieatfinal_db01`
-- 帳號：`root`
-- 密碼：`123456`
+本專案使用 Redis 作為 JWT 黑名單機制的快取工具，請依照下列方式啟動 Redis 服務：
 
-登入容器：
+### 📦 安裝方式（擇一）
+
+#### macOS / Linux 使用 Homebrew 安裝：
+```bash
+brew install redis
+redis-server
+```
+
+#### Windows 使用建議：
+- 安裝 [Memurai](https://www.memurai.com/) 或 [Redis for Windows](https://github.com/microsoftarchive/redis/releases)
+- 啟動 `redis-server.exe`
+
+#### 使用 Docker 快速啟動：
+```bash
+docker run --name redis-allieat -p 6379:6379 -d redis
+```
+
+### 🔧 專案預設 Redis 設定：
+
+- 主機：`localhost`
+- 埠號：`6379`
+- 密碼：無（如需設密碼，請修改 `application.properties`）
+
+```properties
+spring.data.redis.host=localhost
+spring.data.redis.port=6379
+```
+
+你可以使用 `redis-cli` 驗證連線狀況：
 
 ```bash
-docker exec -it allieat-backstage-myversion-db-1 mysql -u root -p123456
+redis-cli
+ping  # 回傳 PONG 表示 Redis 運作正常
 ```
 
 ---
-
-## 3. Redis 啟動資訊
-
-- Host：`redis`
-- Port：`6379`
-- 用途：JWT 黑名單快取
-
-進入 Redis：
-
-```bash
-docker exec -it allieat-backstage-myversion-redis-1 redis-cli
-```
-
----
-
-
----
-
-## 5. 服用啟用後請至瀏覽器訪問
-
-啟動後即可訪問：
-
-```
-http://localhost:8080
-```
